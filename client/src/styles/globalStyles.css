@@ -1,3 +1,5 @@
+/* GLOBAL STYLES */
+
 *,
 ::after,
 ::before {
@@ -54,7 +56,7 @@ button {
     font-family: var(--ff-montserrat);
 }
 
-input {
+input, textarea {
     font-size: 12px;
     font-family: var(--ff-open-sans);
     color: var(--clr-text-sec);
@@ -74,7 +76,7 @@ input {
     button {
         font-size: 18px;
     }
-    input {
+    input, textarea {
         font-size: 14px;
     }
 }

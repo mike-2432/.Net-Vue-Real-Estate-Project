@@ -1,0 +1,68 @@
+/* AUTH FORM STYLES */
+/* Contains styles for the login and register form */
+.auth-title {
+    margin-bottom: 0.5rem;
+}
+
+.auth-title-underline {
+    width: 3rem;
+    height: 3px;
+    background-color: var(--clr-prim);
+    margin: auto;
+    margin-bottom: 1.5rem;
+    border-radius: var(--radius);
+}
+
+.auth-form-wrapper input {
+    display: flex;
+    margin: auto;
+    margin-top: 0.3rem;
+    padding: 0.5rem;
+    height: 2.5rem;
+    width: 70vw;
+    max-width: 20rem;
+    opacity: 0.8;
+    margin-bottom: 1rem;
+}
+
+.auth-form-wrapper input:focus {
+    opacity: 1;
+}
+
+.auth-submit-btn {
+    width: 70vw;
+    max-width: 20rem;
+    height: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    border: none;
+    background-color: var(--clr-prim);
+    border-radius: var(--radius);
+    color: var(--clr-text-white);
+    margin-top: 1.5rem;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.auth-redirect-btn {
+    margin-top: 1.5rem;    
+    width: 70vw;
+    max-width: 20rem;
+    height: 3rem;
+    border-radius: var(--radius);
+    background-color: var(--clr-background-2);
+    border: 1px solid var(--clr-prim);
+    color: var(--clr-prim);
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.auth-error-message {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 2rem;
+    color: red;
+}

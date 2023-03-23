@@ -37,13 +37,13 @@ namespace server.Main.Controllers
 
         // LOGIN //
         [HttpPost("login")]
-        public async Task<ActionResult<string>> Login(UserLoginDto request)
+        public async Task<ActionResult<ServiceResponseDto<string>>> Login(UserLoginDto request)
         {
             // Log in the user
             var response = await _iAuthService.Login(request.Username, request.Password);
 
             // Return the response message
-            if (!response.Success) return BadRequest(response.Message);
+            if (!response.Success) return BadRequest(response);
             return Ok(response);
         }
 

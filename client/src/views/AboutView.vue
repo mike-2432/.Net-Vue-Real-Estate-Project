@@ -1,12 +1,25 @@
 <template>
   <div class="page-container">
     <h1 class="margin-bottom-big">About DTT Real Estate</h1>
-    <p class="margin-bottom-small">Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum molestias, quasi asperiores eius, voluptatem sed veritatis est reprehenderit ipsa expedita perferendis perspiciatis pariatur in iste sit? Alias eveniet amet est! Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas neque blanditiis eum beatae? Reiciendis nobis libero aliquid, officia asperiores beatae porro. Vitae alias perspiciatis distinctio dicta unde, expedita quibusdam omnis.</p>
-    <p class="margin-bottom-big">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum, explicabo ab error corrupti quos qui mollitia voluptatibus placeat cumque ipsa similique laudantium omnis est facere asperiores totam! Voluptatum, iure enim!</p>
-  
+    <p class="margin-bottom-small">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum molestias,
+      quasi asperiores eius, voluptatem sed veritatis est reprehenderit ipsa
+      expedita perferendis perspiciatis pariatur in iste sit? Alias eveniet amet
+      est! Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas neque
+      blanditiis eum beatae? Reiciendis nobis libero aliquid, officia asperiores
+      beatae porro. Vitae alias perspiciatis distinctio dicta unde, expedita
+      quibusdam omnis.
+    </p>
+    <p class="margin-bottom-big">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum,
+      explicabo ab error corrupti quos qui mollitia voluptatibus placeat cumque
+      ipsa similique laudantium omnis est facere asperiores totam! Voluptatum,
+      iure enim!
+    </p>
+
     <h1 class="margin-bottom-small">Design and Development</h1>
     <div class="horizontal-wrapper">
-      <img src="@/assets/images/img_logo_dtt@3x.png">
+      <img src="@/assets/images/img_logo_dtt@3x.png" />
       <div class="margin-left-small vertical-center">
         <p>By DTT</p>
         <a href="https://www.d-tt.nl/">www.d-tt.nl</a>

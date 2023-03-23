@@ -1,6 +1,7 @@
 <template>
   <div>
-    <Navbar />
+    <!-- The forceRenderKey is used to refresh the component after the user logs in -->
+    <Navbar :key="{forceRenderKey}"/>
     <DeleteWarning v-if="showDeleteWarning" />
     <router-view></router-view>
   </div>
@@ -20,8 +21,9 @@ export default {
     DeleteWarning,
   },
   computed: {
-    ...mapState('deleteListing', ['showDeleteWarning'])
-  }
+    ...mapState('deleteListing', ['showDeleteWarning']),
+    ...mapState('auth', ['forceRenderKey'])
+  },
 }
 </script>
 
