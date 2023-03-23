@@ -174,7 +174,6 @@ export default {
     display: block;
     height: 60%;
     margin: auto 0;
-    padding-right: 2rem;
   }
 
   .desktop-links {
@@ -191,7 +190,7 @@ export default {
   }
 
   .desktop-links ul li {
-    padding: 0 1.8rem;
+    padding: 0 0 0 3.5rem;
     font-family: var(--ff-montserrat);
     cursor: pointer;
   }

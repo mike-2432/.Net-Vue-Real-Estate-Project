@@ -34,10 +34,10 @@ export default {
   data() {
     return {
       requestData: {
-        username: "testuser3",
-        email: "test@mail.nl",
-        password: "123456",
-        passwordRepeat: "12345",
+        username: "",
+        email: "",
+        password: "",
+        passwordRepeat: "",
       },
       formValues: [
         {

@@ -1,5 +1,5 @@
 const routes = {
-  apiRoute: "http://localhost:5000/",
+  apiRoute: "/",
   blobRoute: "https://housestorage1.blob.core.windows.net/housecontainer/",
 };
 

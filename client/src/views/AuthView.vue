@@ -37,7 +37,7 @@ export default {
 }
 .auth-box {
   position: relative;
-  margin: 4rem auto 0 auto;
+  margin: 4rem auto 8rem auto;
   padding-top: 3rem;
   width: 90vw;
   max-width: 30rem;
@@ -51,7 +51,7 @@ export default {
 @media screen and (min-width: 550px) {
   .auth-box {
     height: 38rem;
-    margin: 6rem auto 0 auto;
+    margin: 6rem auto 4rem auto;
   }
   .page-container {
     max-width: var(--max-width);
