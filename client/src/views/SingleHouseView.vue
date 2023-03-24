@@ -84,7 +84,7 @@
   <NotFound v-else-if="isLoaded === 'notFound'" message="Page not found" />
 
   <!-- LOADING -->
-  <LoadingScreen v-else />
+  <LoadingScreen v-else class="centered" />
 </template>
 
 <!-- SCRIPT -->
@@ -261,6 +261,10 @@ export default {
 
 .semibold {
   font-weight: var(--font-weight-semibold);
+}
+
+.centered {
+  margin-top: 30vh;
 }
 
 @media screen and (min-width: 340px) {

@@ -21,7 +21,7 @@
       </div>
 
       <!-- FORM -->
-      <!-- Iterates over al form values -->
+      <!-- Iterates over all form values -->
       <form @submit.prevent="handleSubmit" class="form-wrapper">
         <div v-for="item in formValues" :key="item.id">
           <!-- Form Item -->
@@ -102,8 +102,9 @@
       </form>
     </div>
   </div>
+
   <!-- LOADING -->
-  <LoadingScreen v-else />
+  <LoadingScreen v-else class="centered" />
 </template>
 
 <!-- SCRIPT -->
@@ -415,6 +416,10 @@ textarea:focus {
 .disabled {
   background-color: var(--clr-text-sec);
   cursor: default;
+}
+
+.centered {
+  margin-top: 30vh;
 }
 
 /* DESKTOP ADJUSTMENTS */

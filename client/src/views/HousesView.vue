@@ -23,7 +23,7 @@
     />
 
     <!-- LOADING SCREEN -->
-    <LoadingScreen v-else-if="isLoaded == 'notLoaded'" />
+    <LoadingScreen v-else-if="isLoaded == 'notLoaded'" class="centered" />
 
     <!-- UNABLE TO FETCH RESOURCES -->
     <NotFound v-else message="Something went wrong..." />
@@ -71,6 +71,10 @@ export default {
 }
 li {
   margin-bottom: 2rem;
+}
+
+.centered {
+  margin-top: 15vh;
 }
 
 @media screen and (min-width: 550px) {

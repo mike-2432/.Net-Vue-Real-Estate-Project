@@ -14,8 +14,8 @@ export default {
 .loader {
   content: "";
   display: block;
-  width: 7rem;
-  height: 7rem;
+  width: 4rem;
+  height: 4rem;
   margin: auto;
   margin-top: 15%;
   border-radius: 50%;
@@ -31,6 +31,13 @@ export default {
 
   100% {
     transform: rotate(720deg);
+  }
+}
+
+@media screen and (min-width: 550px) {
+  .loader {
+    width: 7rem;
+    height: 7rem;
   }
 }
 </style>
