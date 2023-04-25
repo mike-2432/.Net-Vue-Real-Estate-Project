@@ -12,7 +12,6 @@ const getSingleListing = {
   mutations: {
     setSingleHouse(state, data) {
       state.singleHouse = data;
-
       // Adds the single house to the history in local storage
       // The history contains a maximum of 4 houses
       if (localStorage.getItem("history") === null) {

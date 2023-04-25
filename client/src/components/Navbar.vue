@@ -6,53 +6,57 @@
       <img class="logo" src="@/assets/images/img_logo_dtt@3x.png" />
       <nav class="desktop-links">
         <ul>
-          <router-link to="/">
-            <li :class="[isAboutPage || isUserPage ? 'inactive' : 'active']">
-              Houses
-            </li>
-          </router-link>
-          <router-link to="/about">
-            <li :class="[isAboutPage ? 'active' : 'inactive']">About</li>
-          </router-link>
-          <div class="align-right">
-            <router-link to="/login">
-              <li
-                v-if="!isLoggedIn"
-                :class="[isUserPage ? 'active' : 'inactive']"
-              >
-                Login
-              </li>
-            </router-link>
-            <li v-if="isLoggedIn" @click="handleLogout" class="inactive">
-              Logout
-            </li>
-          </div>
+          <li
+            @click="routeToHousesPage"
+            :class="[isAboutPage || isUserPage ? 'inactive' : 'active']"
+          >
+            Houses
+          </li>
+          <li
+            @click="routeToAboutPage"
+            :class="[isAboutPage ? 'active' : 'inactive']"
+          >
+            About
+          </li>
+          <li
+            @click="routeToLoginPage"
+            v-if="!isLoggedIn"
+            class="align-right"
+            :class="[isUserPage ? 'active' : 'inactive']"
+          >
+            Login
+          </li>
+          <li
+            v-if="isLoggedIn"
+            @click="handleLogout"
+            class="inactive align-right"
+          >
+            Logout
+          </li>
         </ul>
       </nav>
 
       <!-- MOBILE -->
       <nav class="mobile-links">
         <ul>
-          <router-link to="/">
-            <img
-              class="icon"
-              :src="
-                $data[isAboutPage || isUserPage ? 'homeIcon' : 'homeIconActive']
-              "
-            />
-          </router-link>
-          <router-link to="/about">
-            <img
-              class="icon"
-              :src="$data[isAboutPage ? 'infoIconActive' : 'infoIcon']"
-            />
-          </router-link>
-          <router-link v-if="!isLoggedIn" to="/login">
-            <img
-              class="icon"
-              :src="$data[isUserPage ? 'userIconActive' : 'userIcon']"
-            />
-          </router-link>
+          <img
+            @click="routeToHousesPage"
+            class="icon"
+            :src="
+              $data[isAboutPage || isUserPage ? 'homeIcon' : 'homeIconActive']
+            "
+          />
+          <img
+            @click="routeToAboutPage"
+            class="icon"
+            :src="$data[isAboutPage ? 'infoIconActive' : 'infoIcon']"
+          />
+          <img
+            @click="routeToLoginPage"
+            v-if="!isLoggedIn"
+            class="icon"
+            :src="$data[isUserPage ? 'userIconActive' : 'userIcon']"
+          />
           <img
             v-if="isLoggedIn"
             @click="handleLogout"
@@ -105,10 +109,19 @@ export default {
       window.localStorage.removeItem("jwt");
       router.go(0);
     },
+    routeToHousesPage() {
+      router.push({ name: "houses" });
+    },
+    routeToAboutPage() {
+      router.push({ name: "about" });
+    },
+    routeToLoginPage() {
+      router.push({ name: "login" });
+    },
   },
   beforeMount() {
     // Checks the login status
-    // Deletes the jwt from local storage if jwt is not valid anymore
+    // Deletes the jwt from local storage if the jwt is not valid anymore
     this.checkLoginStatus();
   },
 };

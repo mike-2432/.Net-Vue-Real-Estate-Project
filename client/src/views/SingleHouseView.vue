@@ -21,7 +21,7 @@
 
         <!-- Information container -->
         <div class="info-container">
-          <!-- Shows the edit and delete buttons if the house is created by the user -->
+          <!-- Edit and Delete button, is only shown if the house is created by the user -->
           <div v-if="singleHouse.madeByMe" class="edit-delete-btn-wrapper">
             <button @click="routeToEditListing" class="btn">
               <img
@@ -73,7 +73,7 @@
       </div>
     </div>
 
-    <!-- RECOMMENDATIONS -->
+    <!-- RECOMMENDATION AND HISTORY LIST -->
     <div class="recommendation-and-history-container">
       <RecommendationList :id="singleHouse.id" :price="singleHouse.price" />
       <HistoryList :id="singleHouse.id" :price="singleHouse.price" />
@@ -135,6 +135,7 @@ export default {
     $route() {
       this.fetchHouse(this.$route.params);
     },
+    // Sets the house image
     isLoaded() {
       this.houseImage = routes.blobRoute + this.singleHouse.id;
     },

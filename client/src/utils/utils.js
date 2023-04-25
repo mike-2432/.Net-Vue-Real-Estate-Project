@@ -1,37 +1,9 @@
 // UTILS //
 
-// This function splits a streetname into three seperate values
-const splitStreet = (street) => {
-  const streetArray = street.split("");
-  let streetName = "";
-  let houseNumber = "";
-  let addition = "";
-  let startOfAddition = false;
-  // Iterate over the characters of the streetname
-  for (let [index, char] of streetArray.entries()) {
-    // Finds the addition
-    if (char !== " " && startOfAddition) {
-      addition = addition + char;
-    }
-    // Finds the streetname
-    if ((isNaN(char) || char === " ") && !startOfAddition) {
-      streetName = streetName + char;
-    }
-    // Finds the housenumber
-    if (!isNaN(char) && char !== " " && !startOfAddition) {
-      houseNumber = houseNumber + char;
-      // Removes final space in streetname
-      if (streetArray[index - 1] === " ")
-        streetName = streetName.slice(0, index - 1);
-      // Starts addition variable
-      if (isNaN(streetArray[index + 1])) startOfAddition = true;
-    }
-  }
-  return { streetName, houseNumber, addition };
-};
-
-// This function adds a value to a key in local storage.
-// Every key can hold multiple values and all values in the array are unique
+/*
+  This function adds a value to a key in local storage.
+  Every key can hold multiple values and all values in the array are unique
+*/
 const addToLocalStorage = (key, data) => {
   const localStorageData = [];
   // Creates a new item if no items are found
@@ -46,7 +18,9 @@ const addToLocalStorage = (key, data) => {
   localStorage.setItem(key, JSON.stringify(localStorageData));
 };
 
-// This fuction removes a single value from an array from a specific key in local storage
+/* 
+  This fuction removes a single value from an array from a specific key in local storage
+*/
 const removeFromLocalStorage = (key, removeData) => {
   // Returns if the key does not exist
   if (localStorage.getItem(key) === null) return;
@@ -71,16 +45,19 @@ const removeFromLocalStorage = (key, removeData) => {
   }
 };
 
-// This function removes the first value in an array from a specific key in local storage
+/*
+  This function removes the first value in an array from a specific key in local storage
+*/
 const removeFirstFromLocalStorage = (key) => {
   if (localStorage.getItem(key === null)) return;
   const localStorageData = JSON.parse(localStorage.getItem(key));
   localStorage.setItem(key, JSON.stringify(localStorageData.slice(1)));
 };
 
-// EXPORT FUNCTIONS //
+/*
+  Export 
+*/
 const utils = {
-  splitStreet,
   addToLocalStorage,
   removeFromLocalStorage,
   removeFirstFromLocalStorage,

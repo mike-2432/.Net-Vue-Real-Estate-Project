@@ -1,6 +1,5 @@
 import router from "../../router/index.js";
 import routes from "../../router/externalRoutes.js";
-// import utils from "../../utils/utils.js";
 
 // CREATE LISTING MODULE //
 // this module contains methods for creating a new house and editing an existing house

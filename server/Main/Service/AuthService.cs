@@ -13,205 +13,204 @@ using server.Main.Models;
 
 namespace server.Main.Service
 {
-    public class AuthService : IAuthService
+  public class AuthService : IAuthService
+  {
+    // INJECTIONS //
+    // ========== //
+    private readonly DataContext _context;
+    private readonly IConfiguration _configuration;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    public AuthService(DataContext context, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
     {
-        // INJECTIONS //
-        // ========== //
-        private readonly DataContext _context;
-        private readonly IConfiguration _configuration;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        public AuthService(DataContext context, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
-        {
-            _context = context;
-            _configuration = configuration;
-            _httpContextAccessor = httpContextAccessor;
-        }
+      _context = context;
+      _configuration = configuration;
+      _httpContextAccessor = httpContextAccessor;
+    }
 
 
-        // INTERFACE METHODS //
-        // ================= //
-        // GET USER ID //
-        private int GetUserId() => int.Parse(_httpContextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+    // INTERFACE METHODS //
+    // ================= //
+    // GET USER ID //
+    private int GetUserId() => int.Parse(_httpContextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
-        // LOGIN //
-        public async Task<ServiceResponseDto<string>> Login(string username, string password)
-        {
-            var response = new ServiceResponseDto<string>();
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username.ToLower().Equals(username.ToLower()));
-            if (user is null)
-            {
-                response.Success = false;
-                response.Message = "Login Failed";
-            }
-            else if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
-            {
-                response.Success = false;
-                response.Message = "Login Failed";
-            }
-            else
-            {
-                response.Data = CreateToken(user);
-                response.Message = "Success";
-            }
-            return response;
-        }
+    // LOGIN //
+    public async Task<ServiceResponseDto<string>> Login(string username, string password)
+    {
+      var response = new ServiceResponseDto<string>();
+      var user = await _context.Users.FirstOrDefaultAsync(u => u.Username.ToLower().Equals(username.ToLower()));
+      if (user is null)
+      {
+        response.Success = false;
+        response.Message = "Login Failed";
+      }
+      else if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+      {
+        response.Success = false;
+        response.Message = "Login Failed";
+      }
+      else
+      {
+        response.Data = CreateToken(user);
+        response.Message = "Success";
+      }
+      return response;
+    }
 
-        // REGISTER //
-        public async Task<ServiceResponseDto<string>> Register(User user, string password)
-        {
-            var response = new ServiceResponseDto<string>();
-            if (await UserExists(user.Username))
-            {
-                response.Success = false;
-                response.Message = "User already exists.";
-                return response;
-            }
-            if (await EmailExists(user.Email))
-            {
-                response.Success = false;
-                response.Message = "Email already exists.";
-                return response;
-            }
-            if (PasswordValid(password) == false)
-            {
-                response.Success = false;
-                response.Message = "Password is not valid";
-                return response;
-            }
-            if (EmailValid(user.Email) == false)
-            {
-                response.Success = false;
-                response.Message = "Email is not valid";
-                return response;
-            }
+    // REGISTER //
+    public async Task<ServiceResponseDto<string>> Register(User user, string password)
+    {
+      var response = new ServiceResponseDto<string>();
+      if (await UserExists(user.Username))
+      {
+        response.Success = false;
+        response.Message = "User already exists.";
+        return response;
+      }
+      if (await EmailExists(user.Email))
+      {
+        response.Success = false;
+        response.Message = "Email already exists.";
+        return response;
+      }
+      if (PasswordValid(password) == false)
+      {
+        response.Success = false;
+        response.Message = "Password is not valid";
+        return response;
+      }
+      if (EmailValid(user.Email) == false)
+      {
+        response.Success = false;
+        response.Message = "Email is not valid";
+        return response;
+      }
 
-            CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
-            user.PasswordHash = passwordHash;
-            user.PasswordSalt = passwordSalt;
+      CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
+      user.PasswordHash = passwordHash;
+      user.PasswordSalt = passwordSalt;
 
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-            response.Message = "Success";
-            return response;
-        }
+      _context.Users.Add(user);
+      await _context.SaveChangesAsync();
+      response.Message = "Success";
+      return response;
+    }
 
-        // CHANGE PASSWORD //
-        public async Task<ServiceResponseDto<string>> ChangePassword(string oldPassword, string newPassword)
-        {
-            var response = new ServiceResponseDto<string>();
-            if (PasswordValid(newPassword) == false)
-            {
-                response.Success = false;
-                response.Message = "Password is not valid";
-                return response;
-            }
+    // CHANGE PASSWORD //
+    public async Task<ServiceResponseDto<string>> ChangePassword(string oldPassword, string newPassword)
+    {
+      var response = new ServiceResponseDto<string>();
+      if (PasswordValid(newPassword) == false)
+      {
+        response.Success = false;
+        response.Message = "Password is not valid";
+        return response;
+      }
 
-            var user = await _context.Users.FirstAsync(u => u.Id == GetUserId());
-            if (!VerifyPasswordHash(oldPassword, user.PasswordHash, user.PasswordSalt))
-            {
-                response.Success = false;
-                response.Message = "Old Password is not correct";
-                return response;
-            }
-            if (VerifyPasswordHash(newPassword, user.PasswordHash, user.PasswordSalt))
-            {
-                response.Success = false;
-                response.Message = "Password did not change";
-                return response;
-            }
+      var user = await _context.Users.FirstAsync(u => u.Id == GetUserId());
+      if (!VerifyPasswordHash(oldPassword, user.PasswordHash, user.PasswordSalt))
+      {
+        response.Success = false;
+        response.Message = "Old Password is not correct";
+        return response;
+      }
+      if (VerifyPasswordHash(newPassword, user.PasswordHash, user.PasswordSalt))
+      {
+        response.Success = false;
+        response.Message = "Password did not change";
+        return response;
+      }
 
-            CreatePasswordHash(newPassword, out byte[] passwordHash, out byte[] passwordSalt);
-            user.PasswordHash = passwordHash;
-            user.PasswordSalt = passwordSalt;
-            _context.Users.Attach(user);
-            await _context.SaveChangesAsync();
-            response.Message = "Success";
-            return response;
-        }
+      CreatePasswordHash(newPassword, out byte[] passwordHash, out byte[] passwordSalt);
+      user.PasswordHash = passwordHash;
+      user.PasswordSalt = passwordSalt;
+      _context.Users.Attach(user);
+      await _context.SaveChangesAsync();
+      response.Message = "Success";
+      return response;
+    }
 
-        // USER EXISTS //
-        public async Task<bool> UserExists(string username)
-        {
-            if (await _context.Users.AnyAsync(u => u.Username.ToLower() == username.ToLower())) return true;
-            return false;
-        }
+    // USER EXISTS //
+    public async Task<bool> UserExists(string username)
+    {
+      if (await _context.Users.AnyAsync(u => u.Username.ToLower() == username.ToLower())) return true;
+      return false;
+    }
 
+    // VALIDATION METHODS //
+    // ================== //
+    // EMAIL EXISTS //
+    private async Task<bool> EmailExists(string email)
+    {
+      if (await _context.Users.AnyAsync(u => u.Email.ToLower() == email.ToLower())) return true;
+      return false;
+    }
 
-        // VALIDATION METHODS //
-        // ================== //
-        // EMAIL EXISTS //
-        private async Task<bool> EmailExists(string email)
-        {
-            if (await _context.Users.AnyAsync(u => u.Email.ToLower() == email.ToLower())) return true;
-            return false;
-        }
+    // IS PASSWORD VALID //
+    private bool PasswordValid(string password)
+    {
+      var hasRequired = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$");
+      var isValid = hasRequired.IsMatch(password);
+      return isValid;
+    }
 
-        // IS PASSWORD VALID //
-        private bool PasswordValid(string password)
-        {
-            var hasRequired = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$");
-            var isValid = hasRequired.IsMatch(password);
-            return isValid;
-        }
+    // IS EMAIL VALID //
+    private bool EmailValid(string email)
+    {
+      Regex regex = new Regex(@"^[\w!#$%&'*+\-/=?\^_`{|}~]+(\.[\w!#$%&'*+\-/=?\^_`{|}~]+)*" + "@" + @"((([\-\w]+\.)+[a-zA-Z]{2,4})|(([0-9]{1,3}\.){3}[0-9]{1,3}))$");
+      Match match = regex.Match(email);
+      if (match.Success) return true;
+      return false;
+    }
 
-        // IS EMAIL VALID //
-        private bool EmailValid(string email)
-        {
-            Regex regex = new Regex(@"^[\w!#$%&'*+\-/=?\^_`{|}~]+(\.[\w!#$%&'*+\-/=?\^_`{|}~]+)*" + "@" + @"((([\-\w]+\.)+[a-zA-Z]{2,4})|(([0-9]{1,3}\.){3}[0-9]{1,3}))$");
-            Match match = regex.Match(email);
-            if (match.Success) return true;
-            return false;
-        }
+    // PASSWORD METHODS //
+    // ================ //
+    // CREATE PASSWORD HASH //
+    private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+    {
+      using (var hmac = new System.Security.Cryptography.HMACSHA512())
+      {
+        passwordSalt = hmac.Key;
+        passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+      }
+    }
 
-        // PASSWORD METHODS //
-        // ================ //
-        // CREATE PASSWORD HASH //
-        private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
-        {
-            using (var hmac = new System.Security.Cryptography.HMACSHA512())
-            {
-                passwordSalt = hmac.Key;
-                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-            }
-        }
+    // VALIDATE PASSWORD //
+    private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
+    {
+      using (var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))
+      {
+        var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+        return computedHash.SequenceEqual(passwordHash);
+      }
+    }
 
-        // VALIDATE PASSWORD //
-        private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
-        {
-            using (var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))
-            {
-                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-                return computedHash.SequenceEqual(passwordHash);
-            }
-        }
-
-        // CREATE TOKEN ///
-        private string CreateToken(User user)
-        {
-            var claims = new List<Claim>
+    // CREATE TOKEN ///
+    private string CreateToken(User user)
+    {
+      var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.Username)
             };
 
-            var appSettingsToken = _configuration.GetSection("AppSettings:Token").Value;
-            if (appSettingsToken is null)
-                throw new Exception("Appsettings Token is null");
+      var appSettingsToken = _configuration.GetSection("AppSettings:Token").Value;
+      if (appSettingsToken is null)
+        throw new Exception("Appsettings Token is null");
 
-            SymmetricSecurityKey key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(appSettingsToken));
-            SigningCredentials credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+      SymmetricSecurityKey key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(appSettingsToken));
+      SigningCredentials credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddDays(1),
-                SigningCredentials = credentials
-            };
+      var tokenDescriptor = new SecurityTokenDescriptor
+      {
+        Subject = new ClaimsIdentity(claims),
+        Expires = DateTime.Now.AddDays(1),
+        SigningCredentials = credentials
+      };
 
-            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-            SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
+      JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+      SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
 
-            return tokenHandler.WriteToken(token);
-        }
+      return tokenHandler.WriteToken(token);
     }
+  }
 }

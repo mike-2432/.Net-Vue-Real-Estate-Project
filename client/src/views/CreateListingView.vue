@@ -1,14 +1,18 @@
 <!-- CREATE LISTING VIEW -->
-<!-- This template contains both the option to edit an existing listing and -->
-<!-- create a new listing, which is dependend on the url -->
+<!-- 
+  This template contains both the option to edit an existing listing and 
+  create a new listing, which is dependend on the url.
+-->
 <template>
-  <!-- OUTER CONTAINER -->
-  <!-- This container is exclusively used for the background image -->
-  <!-- If the page is the edit listing page, wait until the house is fetched -->
+  <!-- PAGE CONTAINER -->
+  <!-- 
+    The outer container is exclusively used for the background image.
+    If the page is the edit listing page, wait until the house is fetched.
+  -->
   <div class="page-outer-container" v-if="dataIsLoaded">
-    <!-- PAGE CONTAINER -->
     <div class="page-container">
       <!-- HEADER -->
+      <!-- The header contains the back button and the title -->
       <div class="header">
         <button class="back-btn">
           <router-link to="/">
@@ -225,12 +229,6 @@ export default {
         this.previewImage =
           "https://housestorage1.blob.core.windows.net/housecontainer/" +
           this.singleHouse.id;
-
-        // Image is not yet loading properly in this version
-        // old code //
-        //
-        // this.previewImage = this.singleHouse.image
-        //
       }
     },
   },

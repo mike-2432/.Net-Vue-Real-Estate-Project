@@ -25,6 +25,7 @@ builder.Services.AddDbContext<DataContext>(options =>
 builder.Services.AddControllers();
 builder.Services.AddScoped<IHouseService, HouseService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IMailService, MailService>();
 builder.Services.AddTransient<IAzureStorage, AzureStorage>();
 builder.Services.AddHttpContextAccessor();
 

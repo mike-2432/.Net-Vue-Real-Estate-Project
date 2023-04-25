@@ -64,7 +64,6 @@ const getListings = {
     // Sorted list based on the sortOption, reverseOption and searchFilter
     getSortedList(state) {
       const searchFilter = state.searchFilter.toLowerCase().split(" ");
-
       // Filters the houses //
       let filtered = [...state.houseList].filter((house) => {
         return searchFilter.every(
@@ -73,12 +72,10 @@ const getListings = {
             house.city.toLowerCase().includes(i)
         );
       });
-
       // Sort only the owned listings
       if (state.showMyListings == true) {
         filtered = filtered.filter((house) => house.madeByMe == true);
       }
-
       // Sorts the houses //
       const sorted = filtered.sort((a, b) => {
         if (a[state.sortOption] > b[state.sortOption]) {

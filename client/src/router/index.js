@@ -1,7 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
 import externalRoutes from "./externalRoutes";
 
-// Setting up the routes
+/* 
+  Setting up the routes
+*/
 const routes = [
   {
     path: "/",
@@ -51,13 +53,17 @@ const routes = [
   },
 ];
 
-// Creating the router
+/* 
+  Creating the router
+*/
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
 });
 
-// Global Guards
+/* 
+  Global Guards
+*/
 router.beforeEach(async (to, _, next) => {
   if (to.matched.some((route) => route.meta.requiresAuth)) {
     const allowed = await loginStatus();
@@ -66,27 +72,24 @@ router.beforeEach(async (to, _, next) => {
   next();
 });
 
-// Function to check if a user is logged in
+/* 
+  Function to check if a user is logged in
+*/
 const loginStatus = async () => {
-  try {
-    // Gets the jwt from localstorage if present
-    const jwt = window.localStorage.getItem("jwt");
-    const response = await fetch(
-      externalRoutes.apiRoute + "api/auth/loggedIn",
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + jwt,
-        },
-      }
-    );
-    if (response.ok) return true;
-    window.localStorage.removeItem("jwt");
-    return false;
-  } catch (err) {
-    console.log(err);
-  }
+  // Gets the jwt from localstorage if present
+  const jwt = window.localStorage.getItem("jwt");
+  const response = await fetch(externalRoutes.apiRoute + "api/auth/loggedIn", {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + jwt,
+    },
+  });
+  if (response.ok) return true;
+  window.localStorage.removeItem("jwt");
+  return false;
 };
 
-// Export router
+/* 
+  Export router
+*/
 export default router;
